@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:composition template="/template.xhtml">
+		<ui:define name="content">
+				<p:dialog header="WebService" visible="true"  draggable="false" resizable="false"
+						closable="false" width="60%" >
+					<h:form id="frmWebService" prependId="false">
+						<p:commandButton value="Limpar" actionListener="#{webServiceBean.limparDados}" update=":frmWebService" process="@this" />
+						<p:panel header="DE">
+							<p:outputLabel value="URL Webservice:"/>
+							<p:inputText value="#{webServiceBean.webService.urlFrom}" size="50">
+								<p:ajax event="keyup" update="out2" />
+							</p:inputText>
+							<h:outputText id="out0" value="#{webServiceBean.webService.urlFrom}" rendered="false"/>
+							<p:commandButton value="Testar" actionListener="#{webServiceBean.testarUrlFromGet}" update=":frmResposata"
+								oncomplete="PF('dialogResposta').show()"
+							 />
+							<h:panelGrid columns="3" id="pnKeysFrom">
+								<p:outputLabel value="Key:"/>
+								<p:outputLabel value="Value:"/>
+								<p:outputLabel value=""></p:outputLabel>
+								<p:inputText value="#{webServiceBean.webServiceKey.key}" immediate="true" id="inputKeyFrom">
+									<p:ajax event="keyup" update="out1" />
+								</p:inputText>
+								
+								<h:outputText id="out1" value="#{webServiceBean.webServiceKey.key}" rendered="false"/>
+								<p:inputText value="#{webServiceBean.webServiceKey.value}" immediate="true">
+									<p:ajax event="keyup" update="out2" />
+								</p:inputText>
+								
+								<h:outputText id="out2" value="#{webServiceBean.webServiceKey.value}" rendered="false"/>
+							<p:commandButton value="Adicionar" actionListener="#{webServiceBean.adicionarKeyFrom()}" update=":frmWebService" process="@this">
+								</p:commandButton>
+							</h:panelGrid>
+							<h:panelGrid columns="1">
+								<p:dataTable var="webFrom" value="#{webServiceBean.webService.listKeyFrom}" id="dtWebFrom">
+							 	
+								 	<p:column headerText="Key">
+								        <h:outputText value="#{webFrom.key}" />
+								    </p:column>
+								    <p:column headerText="Value">
+								        <h:outputText value="#{webFrom.value}" />
+								    </p:column>
+								    <p:column headerText="Opções">
+								        <p:commandButton value="Remover" actionListener="#{webServiceBean.removerKeyFrom(webFrom)}"
+								        	update="dtWebFrom" process="@this">
+								        </p:commandButton>
+								    </p:column>
+							    </p:dataTable>
+							</h:panelGrid>
+						</p:panel>
+							
+						<p:panel header="PARA">
+						
+							<p:outputLabel value="URL Webservice:"/>
+							<p:inputText value="#{webServiceBean.webService.urlTo}" size="50"></p:inputText>
+							<h:panelGrid columns="3">
+								<p:outputLabel value="Key:"/>
+								<p:outputLabel value="Value:"/>
+								<p:outputLabel value=""></p:outputLabel>
+								<p:inputText value="#{webServiceBean.webServiceKey.key}">
+									<p:ajax event="keyup" update="out3" />
+								</p:inputText>
+								
+								<h:outputText id="out3" value="#{webServiceBean.webServiceKey.key}" rendered="false"/>
+								<p:inputText value="#{webServiceBean.webServiceKey.value}">
+									<p:ajax event="keyup" update="out4" />
+								</p:inputText>
+								
+								<h:outputText id="out4" value="#{webServiceBean.webServiceKey.value}" rendered="false"/>
+								
+								<p:commandButton value="Adicionar" actionListener="#{webServiceBean.adicionarKeyTo()}" update=":frmWebService"></p:commandButton>
+							</h:panelGrid>
+							
+							<h:panelGrid columns="1">
+								<p:dataTable var="webTo" value="#{webServiceBean.webService.listKeyTo}" id="dtWebTo">
+							 	
+								 	<p:column headerText="Key">
+								        <h:outputText value="#{webTo.key}" />
+								    </p:column>
+								    <p:column headerText="Value">
+								        <h:outputText value="#{webTo.value}" />
+								    </p:column>
+								    <p:column headerText="Opções">
+								        <p:commandButton value="Remover" actionListener="#{webServiceBean.removerKeyTo(webTo)}"
+								        	update="dtWebTo" process="@this">
+								        </p:commandButton>
+								    </p:column>
+							    </p:dataTable>
+							</h:panelGrid>
+						</p:panel>
+					</h:form>
+				</p:dialog>
+			
+			
+			<p:dialog header="Resposta"
+			 	resizable="false" modal="true" widgetVar="dialogResposta"
+				position="center" id="mdlResposata">
+				
+				<h:form id="frmResposata" prependId="false">
+					<p:outputPanel>
+						<h:panelGrid columns="2">
+							<h:inputTextarea value="#{webServiceBean.webService.respostaFrom}" cols="200" rows="10" />
+						</h:panelGrid>
+					</p:outputPanel>
+				</h:form>
+			</p:dialog>
+			
+		</ui:define>
+	</ui:composition>
+</html>
